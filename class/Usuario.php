@@ -43,6 +43,16 @@
 			}
 		}
 
+		public static function getList(){
+			$sql=new Sql();
+			return $sql->select("select * from tb_usuarios order by deslogin");
+		}
+
+		public static function search($chave){
+			$sql=new Sql();
+			$buscado="%".$chave."%";
+			return $sql->select("select * from tb_usuarios where deslogin like :search order by deslogin",array(":search"=>$buscado));
+		}
 
 		public function __toString(){
 			return json_encode(array(
@@ -51,6 +61,28 @@
 				"desSenha"=> $this->getDesSenha(),
 				"dtCadastro"=> $this->getdtCadastro()->format("d/m/Y H:i:s")
 			));
+		}
+
+
+		public function login($usuario,$senha){
+			$sql=new Sql();
+			
+			$result= $sql->select("select * from tb_usuarios where deslogin = :user and dessenha = :pass",array(":user"=>$usuario,":pass"=>$senha));
+			if(count($result)>0){
+				$row=$result[0];
+				//var_dump($row);
+				
+
+				$this->setIdUsuario($row["idusuario"]);
+				$this->setDesLogin($row['deslogin']);
+				$this->setDesSenha($row['dessenha']);
+				$this->setDtCadastro(new DateTime($row['dtcadastro']));
+			}else{
+				throw new Exception("erro de login e/ou senha", 1);
+				  
+			}	
+
+				
 		}
 
 			

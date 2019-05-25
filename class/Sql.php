@@ -12,7 +12,7 @@
 		}
 	}
 
-	
+
 	private function setParam($statement, $key, $value){
 		$statement->bindParam($key, $value);
 	}
@@ -32,5 +32,7 @@
 		$stmt=$this->query($rawQuery,$params);
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	
 }	
 ?>
