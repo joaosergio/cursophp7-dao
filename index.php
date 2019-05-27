@@ -31,9 +31,19 @@ $aluno=new Usuario("kyle busch","nascar18");
 $aluno->insert();
 echo $aluno;
 */
+
+/*
+//alterar um usuário
 $aluno=new Usuario();
 $aluno->loadById(14);
 $aluno->update("Fernando Prass","camisa1sep!");
 echo $aluno;
+*/
+
+//alterar um usuário
+$aluno=new Usuario();
+$aluno->loadById(17);
+$aluno->delete();
+
 
 ?>

@@ -105,6 +105,14 @@
 
 		}
 
+		public function delete(){
+				
+			$sql=new Sql();
+			$sql->query("DELETE from tb_usuarios where idusuario=:i",array(
+				":i"=>$this->getIdUsuario()
+			));
+
+		}
 		public function setData($row){
 
 			$this->setIdUsuario($row["idusuario"]);
