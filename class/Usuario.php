@@ -35,11 +35,8 @@
 				$row=$result[0];
 				//var_dump($row);
 				
-
-				$this->setIdUsuario($row["idusuario"]);
-				$this->setDesLogin($row['deslogin']);
-				$this->setDesSenha($row['dessenha']);
-				$this->setDtCadastro(new DateTime($row['dtcadastro']));
+				$this->setData($row);
+				
 			}
 		}
 
@@ -63,6 +60,11 @@
 			));
 		}
 
+		public function __construct($l="",$s=""){
+			$this->setDesLogin($l);
+			$this->setDesSenha($s);
+		}
+
 
 		public function login($usuario,$senha){
 			$sql=new Sql();
@@ -72,11 +74,8 @@
 				$row=$result[0];
 				//var_dump($row);
 				
-
-				$this->setIdUsuario($row["idusuario"]);
-				$this->setDesLogin($row['deslogin']);
-				$this->setDesSenha($row['dessenha']);
-				$this->setDtCadastro(new DateTime($row['dtcadastro']));
+				$this->setData($row);
+				 
 			}else{
 				throw new Exception("erro de login e/ou senha", 1);
 				  
@@ -84,6 +83,42 @@
 
 				
 		}
+
+		public function insert(){
+			$sql=new Sql();
+			$results=$sql->select("call sp_usuarios_insert(:user,:pass)",array(":user"=>$this->getDesLogin(),":pass"=>$this->getDesSenha()));
+			if ([$results]>0){
+				$this->setData($results[0]);
+			}
+		}
+
+		public function update($login,$senha){
+			$this->setDesLogin($login);
+			$this->setDesSenha($senha);
+			$sql=new Sql();
+			$sql->query("update tb_usuarios set deslogin=:l, dessenha=:s where idusuario=:i",array(
+				':l'=>$this->getDesLogin(),
+				':s'=>$this->getDesSenha(),
+				':i'=>$this->getIdUsuario()
+			));
+			$this->loadById($this->getDesSenha());
+
+		}
+
+		public function setData($row){
+
+			$this->setIdUsuario($row["idusuario"]);
+			$this->setDesLogin($row['deslogin']);
+			$this->setDesSenha($row['dessenha']);
+			$this->setDtCadastro(new DateTime($row['dtcadastro']));
+		}
+
+
+
+
+
+
+
 
 			
 	}
